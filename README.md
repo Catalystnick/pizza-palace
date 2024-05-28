@@ -1,5 +1,16 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Goal for the app
+
+This is a personal project of a pizza app that has two sides. A customer and Admin side.
+Logged in customers will be able to order pizzas while admins will be able to manage orders,add/remove items plus other operations.
+
+## Tech stack
+
+React,NextJs,MongoDB Atlas,Mongoose, AuthJs
+
+Please note project is not complete and I am working on adding more functionality.
+
 ## Getting Started
 
 First, run the development server:

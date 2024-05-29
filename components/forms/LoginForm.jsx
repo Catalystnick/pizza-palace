@@ -24,7 +24,6 @@ import MessageComponent from "../MessageComponent";
 import { signIn } from "next-auth/react";
 
 function LoginForm() {
-  const [pending, setIsPending] = useState(false);
   const [error, SetError] = useState("");
 
   /* Defining default values for zod schema */
@@ -36,14 +35,13 @@ function LoginForm() {
     },
   });
 
+  const isSubmitting = form.formState.isSubmitting;
+
   async function onSubmit(values) {
-    setIsPending(true);
     SetError("");
-    login(values)
-      .then((data) => {
-        SetError(data?.error);
-      })
-      .finally(setIsPending(false));
+    login(values).then((data) => {
+      SetError(data?.error);
+    });
   }
 
   /* Shad cdn Form UI */
@@ -64,7 +62,7 @@ function LoginForm() {
                       {...field}
                       type="email"
                       className="bg-white focus:border-4 focus:border-teal-400 focus-visible:ring-0"
-                      disabled={pending}
+                      disabled={isSubmitting}
                     />
                   </FormControl>
                   <FormMessage />
@@ -84,7 +82,7 @@ function LoginForm() {
                       {...field}
                       type="password"
                       className=" bg-white focus:border-4 focus:border-teal-400 focus-visible:ring-0"
-                      disabled={pending}
+                      disabled={isSubmitting}
                     />
                   </FormControl>
                   <FormMessage />
@@ -95,9 +93,9 @@ function LoginForm() {
             <div className="flex justify-center py-4">
               <Button
                 type="submit"
-                className={`w-52 bg-red-600 px-8 py-4 transition-all duration-300 hover:scale-110 hover:bg-red-700 ${pending && "cursor-not-allowed"}`}
+                className={`w-52 bg-red-600 px-8 py-4 transition-all duration-300 hover:scale-110 hover:bg-red-700 ${isSubmitting && "cursor-not-allowed"}`}
               >
-                {pending ? <Spinner /> : "Log in with credentials"}
+                {isSubmitting ? <Spinner /> : "Log in with credentials"}
               </Button>
             </div>
           </form>

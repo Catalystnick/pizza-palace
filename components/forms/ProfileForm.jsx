@@ -1,9 +1,10 @@
 "use client";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import updateProfile from "@/actions/updateProfile";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { registerSchema } from "@/schema/schema";
+import { profileSchema } from "@/schema/schema";
 import {
   Form,
   FormControl,
@@ -12,26 +13,24 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import MessageComponent from "@/components/MessageComponent";
+import ProfileMessageComponent from "@/components/ProfileMessageComponent";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 
-import { FcGoogle } from "react-icons/fc";
-import { register } from "@/actions/register";
 import Spinner from "@/components/Spinner";
-import { signIn } from "next-auth/react";
 
-function RegisterForm() {
+function ProfileForm({ user }) {
   const [success, SetSuccess] = useState("");
   const [error, SetError] = useState("");
 
   /* Defining default values for zod schema */
   const form = useForm({
-    resolver: zodResolver(registerSchema),
+    resolver: zodResolver(profileSchema),
     defaultValues: {
-      name: "",
-      password: "",
-      email: "",
+      name: user.name,
+      email: user.email,
+      number: user?.number,
+      address: user?.address,
     },
   });
 
@@ -40,10 +39,10 @@ function RegisterForm() {
   async function onSubmit(values) {
     SetSuccess("");
     SetError("");
-
-    register(values).then((data) => {
+    updateProfile(values).then((data) => {
       SetSuccess(data?.success);
       SetError(data?.error);
+      console.log(data);
     });
   }
 
@@ -65,7 +64,7 @@ function RegisterForm() {
                       {...field}
                       type="text"
                       className=" bg-white focus:border-4 focus:border-teal-400 focus-visible:ring-0"
-                      disabled={isSubmitting}
+                      disabled={isSubmitting || user.isOauth}
                     />
                   </FormControl>
                   <FormMessage />
@@ -85,6 +84,26 @@ function RegisterForm() {
                       {...field}
                       type="email"
                       className="bg-white focus:border-4 focus:border-teal-400 focus-visible:ring-0"
+                      disabled={true}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="number"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Phone Number</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="+94 123 456 789"
+                      {...field}
+                      type="number"
+                      className="bg-white focus:border-4 focus:border-teal-400 focus-visible:ring-0"
                       disabled={isSubmitting}
                     />
                   </FormControl>
@@ -95,15 +114,15 @@ function RegisterForm() {
 
             <FormField
               control={form.control}
-              name="password"
+              name="address"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>Address</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="******"
+                      placeholder="House Number, Street Name, City"
                       {...field}
-                      type="password"
+                      type="text"
                       className=" bg-white focus:border-4 focus:border-teal-400 focus-visible:ring-0"
                       disabled={isSubmitting}
                     />
@@ -112,35 +131,21 @@ function RegisterForm() {
                 </FormItem>
               )}
             />
-            <MessageComponent success={success} error={error} />
+
+            <ProfileMessageComponent success={success} error={error} />
             <div className="flex justify-center py-4">
               <Button
                 type="submit"
                 className={`w-52 bg-red-600 px-8 py-4 transition-all duration-300 hover:scale-110 hover:bg-red-700 ${isSubmitting && "cursor-not-allowed"}`}
               >
-                {isSubmitting ? <Spinner /> : "Register"}
+                {isSubmitting ? <Spinner /> : "Save"}
               </Button>
             </div>
           </form>
         </Form>
-
-        <div className="py-4 text-center text-xl">OR</div>
-
-        {/* Login with google */}
-        <div className="flex justify-center ">
-          <Button
-            className="flex w-52 justify-center gap-4 bg-white p-5 text-black transition-all duration-300 hover:scale-110 hover:bg-white"
-            onClick={() => {
-              signIn("google", { callbackUrl: "/" });
-            }}
-          >
-            <FcGoogle size={24} />
-            Login with Google
-          </Button>
-        </div>
       </div>
     </div>
   );
 }
 
-export default RegisterForm;
+export default ProfileForm;

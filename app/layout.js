@@ -3,7 +3,6 @@ import "./globals.css";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { AppProvider } from "@/context/AppContext";
-import { SessionProvider } from "next-auth/react";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -20,13 +19,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={roboto.className}>
         <main className="mx-auto max-w-7xl">
-          <SessionProvider>
-            <AppProvider>
-              <NavBar />
-              {children}
-              <Footer />
-            </AppProvider>
-          </SessionProvider>
+          <NavBar />
+          {children}
+          <Footer />
         </main>
       </body>
     </html>

@@ -1,17 +1,13 @@
 import React from "react";
 import { MdErrorOutline } from "react-icons/md";
 import { FaCheck } from "react-icons/fa";
-import Link from "next/link";
 
-function MessageComponent({ success, error }) {
+function ProfileMessageComponent({ success, error }) {
   if (success) {
     return (
       <p className=" flex justify-start gap-3 text-center font-semibold text-black">
-        <FaCheck color="emerald" size={24} />
-        {success}, you can now{" "}
-        <Link href="/login" className="text-black underline">
-          log in
-        </Link>
+        <FaCheck color="green" size={24} />
+        {success}
       </p>
     );
   }
@@ -25,4 +21,4 @@ function MessageComponent({ success, error }) {
   }
 }
 
-export default MessageComponent;
+export default ProfileMessageComponent;

@@ -14,8 +14,6 @@ export default async function NavBar() {
     userName = userName.split(" ")[0];
   }
 
-  console.log(session);
-
   return (
     <>
       {/* Nav bar section */}

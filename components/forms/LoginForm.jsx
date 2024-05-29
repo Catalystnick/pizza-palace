@@ -15,13 +15,12 @@ import {
 
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-
 import { FcGoogle } from "react-icons/fc";
+import { login } from "@/actions/login";
+import { signIn } from "next-auth/react";
 
 import Spinner from "@/components/Spinner";
-import { login } from "@/actions/login";
 import MessageComponent from "../MessageComponent";
-import { signIn } from "next-auth/react";
 
 function LoginForm() {
   const [error, SetError] = useState("");
@@ -35,6 +34,7 @@ function LoginForm() {
     },
   });
 
+  /* sets input field on form status and spinner status */
   const isSubmitting = form.formState.isSubmitting;
 
   async function onSubmit(values) {
@@ -89,6 +89,8 @@ function LoginForm() {
                 </FormItem>
               )}
             />
+
+            {/* Throws error messages on failed login to the user */}
             <MessageComponent error={error} />
             <div className="flex justify-center py-4">
               <Button

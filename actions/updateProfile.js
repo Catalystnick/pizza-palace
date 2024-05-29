@@ -5,6 +5,7 @@ import { connectToDB } from "@/lib/connectToDb";
 import UpdateUserByEmail from "@/databaseActions/updateUserByEmail";
 
 async function updateProfile(values) {
+  /* Safe parse values */
   const validatedFields = profileSchema.safeParse(values);
 
   if (validatedFields.success) {
@@ -18,6 +19,7 @@ async function updateProfile(values) {
 
     await connectToDB();
 
+    /* Update user details when user clicks on save button */
     const updateUser = await UpdateUserByEmail(email, details);
     if (!updateUser) {
       return { error: "Something went wrong. please try again" };

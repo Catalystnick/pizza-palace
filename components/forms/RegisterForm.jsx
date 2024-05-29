@@ -1,9 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "@/schema/schema";
+
 import {
   Form,
   FormControl,
@@ -12,14 +12,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import MessageComponent from "@/components/MessageComponent";
+
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-
 import { FcGoogle } from "react-icons/fc";
 import { register } from "@/actions/register";
-import Spinner from "@/components/Spinner";
 import { signIn } from "next-auth/react";
+
+import MessageComponent from "@/components/MessageComponent";
+import Spinner from "@/components/Spinner";
 
 function RegisterForm() {
   const [success, SetSuccess] = useState("");
@@ -35,6 +36,7 @@ function RegisterForm() {
     },
   });
 
+  /* sets input field on form status and spinner status */
   const isSubmitting = form.formState.isSubmitting;
 
   async function onSubmit(values) {
@@ -112,6 +114,7 @@ function RegisterForm() {
                 </FormItem>
               )}
             />
+            {/* Throws success or error message on registering */}
             <MessageComponent success={success} error={error} />
             <div className="flex justify-center py-4">
               <Button

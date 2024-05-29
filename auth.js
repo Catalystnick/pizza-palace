@@ -1,18 +1,17 @@
 import NextAuth from "next-auth";
 
-import Credentials from "next-auth/providers/credentials";
 import { loginSchema } from "./schema/schema";
+import { connectToDB } from "@/lib/connectToDb";
+import { MongoDBAdapter } from "@auth/mongodb-adapter";
+import { User } from "./databaseSchemaModels/User";
+
+import Credentials from "next-auth/providers/credentials";
 import getUserByEmail from "./databaseActions/getUserByEmail";
 import GetUserByAccount from "./databaseActions/getUserByAccount";
 import getUserById from "./databaseActions/getUserById";
-
 import bcrypt from "bcryptjs";
-import { connectToDB } from "@/lib/connectToDb";
 import Google from "next-auth/providers/google";
-import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "./lib/db";
-
-import { User } from "./databaseSchemaModels/User";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: { strategy: "jwt" },
@@ -68,12 +67,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       await connectToDB();
 
+      /* Check if user exists in database */
       const existingUser = await getUserById(token.sub);
 
       if (!existingUser) return token;
 
+      /* Checks to see if user logged in with socials */
       const oauthUser = await GetUserByAccount(existingUser.id);
 
+      /* Setting flag in token if is OAuth user */
       token.isOauth = !!oauthUser;
       token.role = existingUser?.role;
       token.address = existingUser?.address;
@@ -81,6 +83,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       const email = token.email;
       const role = token.role;
+
+      /* If OAuth user setting default role as USER, pretty sure this can be done in a better way */
       if (oauthUser) {
         await User.findOneAndUpdate(
           { email },

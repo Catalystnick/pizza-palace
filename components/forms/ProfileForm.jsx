@@ -1,10 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import updateProfile from "@/actions/updateProfile";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { profileSchema } from "@/schema/schema";
+
 import {
   Form,
   FormControl,
@@ -13,10 +12,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import ProfileMessageComponent from "@/components/ProfileMessageComponent";
+
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 
+import updateProfile from "@/actions/updateProfile";
+import ProfileMessageComponent from "@/components/ProfileMessageComponent";
 import Spinner from "@/components/Spinner";
 
 function ProfileForm({ user }) {
@@ -34,6 +35,7 @@ function ProfileForm({ user }) {
     },
   });
 
+  /* sets input field on form status and spinner status */
   const isSubmitting = form.formState.isSubmitting;
 
   async function onSubmit(values) {
@@ -132,6 +134,7 @@ function ProfileForm({ user }) {
               )}
             />
 
+            {/* Throws success or error message on click save buttons  */}
             <ProfileMessageComponent success={success} error={error} />
             <div className="flex justify-center py-4">
               <Button

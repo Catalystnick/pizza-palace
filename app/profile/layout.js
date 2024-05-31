@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import AdminNav from "@/components/adminPages/AdminNav";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Create Next App",
@@ -8,6 +9,11 @@ export const metadata = {
 
 export default async function PageLayout({ children }) {
   const session = await auth();
+
+  if (!session) {
+    return redirect("/");
+  }
+
   const role = session?.user?.role;
   return (
     <div className="rounded-lg bg-slate-100">

@@ -35,6 +35,11 @@ const accountSchema = new Schema(
   { timestamps: true },
 );
 
-export const Account = models?.Account || model("Account", accountSchema);
+const itemSchema = new Schema({
+  _id: { type: mongoose.Schema.Types.ObjectId },
+  category: { type: Array, unique: true },
+});
 
+export const Account = models?.Account || model("Account", accountSchema);
 export const User = models?.User || model("User", userSchema);
+export const Item = models?.Item || model("Item", itemSchema);

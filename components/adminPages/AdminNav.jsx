@@ -5,7 +5,7 @@ import React from "react";
 
 function AdminNav() {
   const pathName = usePathname();
-  console.log(pathName);
+
   return (
     <div className="flex gap-4 p-4">
       <Link

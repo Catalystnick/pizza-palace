@@ -22,3 +22,6 @@ export const profileSchema = z.object({
   address: z.string(),
   role: z.string(),
 });
+export const categorySchema = z.object({
+  category: z.string().min(2, { message: "Category cannot be blank" }),
+});

@@ -1,10 +1,12 @@
 import React from "react";
 import ProfilePage from "../../components/profile/ProfilePage";
+import { auth } from "@/auth";
 
-function page() {
+async function page() {
+  const session = await auth();
   return (
     <div>
-      <ProfilePage />
+      <ProfilePage session={session} />
     </div>
   );
 }

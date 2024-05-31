@@ -9,12 +9,13 @@ async function updateProfile(values) {
   const validatedFields = profileSchema.safeParse(values);
 
   if (validatedFields.success) {
-    const { name, address, number, email } = validatedFields.data;
+    const { name, address, number, email, role } = validatedFields.data;
 
     const details = {
       name,
       address,
       number,
+      role,
     };
 
     await connectToDB();

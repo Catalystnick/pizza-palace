@@ -20,4 +20,5 @@ export const profileSchema = z.object({
   number: z.string(),
   email: z.string(),
   address: z.string(),
+  role: z.string(),
 });

@@ -95,8 +95,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         );
       }
 
-      console.log(existingUser);
-
       return token;
     },
   },
